@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <title>Dividend Calculator</title>
+        <link rel="stylesheet" type="text/css" href="dividend-calculator_files/bootstrap.css">
+        <script src="dividend-calculator_files/jquery.js"></script>
+        <style>
+            p, label { font-family: calibri; color: #666; font-size: 16px; }
+            #dividend-calculator { 
+                background-color: #D1E3ED; 
+                height: 240px;
+                width: 400px;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 7px;
+            }
+            #dividend-calculator .form-group input {
+                xmargin: 10px;
+            }
+            #dividend-calculator select { 
+                padding: 7px;
+            } 
+            #dividend-calculator button { xclear: both; } 
+            #dividend-calculator .calculate { width: 50%; float: left; } 
+                .calc-title {
+                font-weight: bold;
+            }
+            #calc-form label {
+                font-weight: normal;
+                padding-right: 5px;
+                width: 185px;
+            }
+            #calc-form input {
+                width: 48%;
+                display: inline-block !important;
+            }
+            #result { 
+                margin: 0px 25px;
+                width: 50%;
+                float: left;
+                height: 50px;
+                background-color: none;
+                xborder: 1px dashed #ACDE7F;
+                color: #78B641;
+                font-size: 25px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+        <script>
+            jQuery(document).ready(function() {
+			    $("#calc-form").submit(function(e) {
+					e.preventDefault();
+					var divamt = parseFloat($("#dividend-amt").val()),
+						stockprice = parseFloat($("#stock-price").val()),
+						divfreq = parseFloat($("#dividend-frequency").val());
+					if(divamt == "" || isNaN(divamt) == true || divamt == undefined) {divamt = 0;} 
+					if(stockprice == "" || isNaN(stockprice) == true || stockprice == undefined) {stockprice = 0;}
+					if(divfreq == "" || isNaN(divfreq) == true || divfreq == undefined) {divfreq = 0;}
+            
+					function formatToCurrency(num) {
+						var value = Number(num);
+						var res = num.split(".");
+						if(num.indexOf('.') === -1) {
+							value = value.toFixed(2);
+							num = value.toString();
+						} else if (res[1].length < 3) {
+							value = value.toFixed(2);
+							num = value.toString();
+						}
+						return num;
+					}
+				    
+					var total = ((divamt * divfreq)/stockprice) * 100;
+					total = Math.round(100*total)/100;
+					total = formatToCurrency(total.toString());
+					$("#result").html(total + "%");
+				});
+			});
+        </script>
+    </head>
+    <body>
+        <div id="dividend-calculator">
+            <p class="calc-title">Dividend Calculator</p>
+            <form id="calc-form">
+                <div class="form-group">
+                    <label for="dividend-amt">Dividend amount per share</label>
+                    <input class="form-control" id="dividend-amt" value="" type="text">
+                </div>
+                <div class="form-group">
+                    <label for="dividend-frequency">Dividend frequency</label>
+                    <select id="dividend-frequency">
+                        <option value="12" selected="selected">monthly</option>
+                        <option value="4">quarterly</option>
+                        <option value="2">semi-annually</option>
+                        <option value="1">annually</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stock-price">Stock price</label>
+                    <input class="form-control" id="stock-price" value="" type="text">
+                </div>
+                <div class="form-group calculate">
+                    <button type="submit" class="btn btn-primary">Calculate</button>
+                </div>
+                <div class="form-group">
+                    <div type="text" id="result" class="xform-control" name="display"></div>
+                </div>
+            </form>
+        </div>
+    
+
+
+</body></html>
